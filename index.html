@@ -90,7 +90,9 @@
                     `;
                     l.innerHTML = data.location.name;
                 },
-                
+                error: function (xhr, status, error) { 
+                    console.error("Terjadi kesalahan:", status, error);
+                    alert("Data cuaca tidak dapat diambil. Pastikan nama kota benar atau periksa koneksi.");
                 },
             });
         });
