@@ -74,10 +74,23 @@
                     let lon = data.location.lon;
                     let lat = data.location.lat;
 
-              
-                error: function (xhr, status, error) { 
-                    console.error("Terjadi kesalahan:", status, error);
-                    alert("Data cuaca tidak dapat diambil. Pastikan nama kota benar atau periksa koneksi.");
+                  
+                    v.innerHTML = `
+                        <h4>Cuaca</h4>
+                        Suhu Celcius = ${suhuC} °C<br>
+                        Suhu Fahrenheit = ${suhuF} °F<br>
+                        Kelembapan = ${kelembapan} %<br><br>
+
+                        <h4>Lokasi</h4>
+                        Negara = ${negara}<br>
+                        Provinsi = ${provinsi}<br>
+                        Kecamatan = ${kecamatan}<br>
+                        Longitude = ${lon}<br>
+                        Latitude = ${lat}
+                    `;
+                    l.innerHTML = data.location.name;
+                },
+                
                 },
             });
         });
