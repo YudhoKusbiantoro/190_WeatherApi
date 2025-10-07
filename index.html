@@ -2,48 +2,86 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cuaca</title>
-</head>
 
-<body>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    Cuaca : <p id="lokasi"></p>
-    <hr>
-    <div id="tampilan"></div>
+
+
+<body>
+    <div class="container">
+        <h2>Informasi Cuaca</h2>
+
+        <div style="text-align: center;">
+            <input type="text" id="lokasiInput" placeholder="Masukkan lokasi...">
+            <button id="getBtn">Get</button>
+        </div>
+
+        <hr>
+        <p class="label">Lokasi: <span id="lokasi">-</span></p>
+        <div id="tampilan">
+            <h3>Cuaca</h3>
+            <p>Suhu Celcius: <span id="celcius">-</span> °C</p>
+            <p>Suhu Fahrenheit: <span id="fahrenheit">-</span> °F</p>
+            <p>Kelembapan: <span id="humidity">-</span> %</p>
+
+            <hr>
+            <h3>Lokasi</h3>
+            <p>Negara: <span id="negara">-</span></p>
+            <p>Provinsi: <span id="provinsi">-</span></p>
+            <p>Kecamatan: <span id="kecamatan">-</span></p>
+            <p>Longitude: <span id="long">-</span></p>
+            <p>Latitude: <span id="lat">-</span></p>
+        </div>
+    </div>
 
     <script>
-        const urlapi = "http://api.weatherapi.com/v1/current.json?key=a195aa20fd814007a3365854250710&q=Yogyakarta&aqi=no";
+        const urlapiBase = "https://api.weatherapi.com/v1/current.json";
+        const apiKey = "a195aa20fd814007a3365854250710";
 
-        $.ajax({
-            url: urlapi,
-            method: "GET",
-            success: function (data) {
-                console.log(data);
-                const v = document.getElementById("tampilan");
-                const l = document.getElementById("lokasi");
+        $("#getBtn").click(function () {
+            const lokasi = $("#lokasiInput").val().trim();
+            if (lokasi === "") {
+                alert("Masukkan nama kota terlebih dahulu!");
+                return;
+            }
 
-                let suhuC = data.current.temp_c;
-                let suhuF = data.current.temp_f;
-                let kelembapan = data.current.humidity; 
+            const urlapi = `${urlapiBase}?key=${apiKey}&q=${encodeURIComponent(lokasi)}&aqi=no`;
 
-                let negara= data.location.country;
-                let provinsi= data.location.region;
-                let kecamatan= data.location.name;
-                let longitude= data.location.lon;
-                let latitude= data.location.lat;    
-                v.innerHTML = suhu;
-                l.innerHTML = lokasi;
-            },
-            fail: function (error) {
-                console.log(error);
-            },
-        });    
-    </script> 
+            $.ajax({
+                url: urlapi,
+                dataType: "json",
+                method: "GET",
+                success: function (data) {
+                    console.log(data);
+                    const v = document.getElementById("tampilan");
+                    const l = document.getElementById("lokasi");
+
+               
+                    let suhuC = data.current.temp_c;
+                    let suhuF = data.current.temp_f;
+                    let kelembapan = data.current.humidity;
+
+                 
+                    let negara = data.location.country;
+                    let provinsi = data.location.region;
+                    let kecamatan = data.location.name;
+                    let lon = data.location.lon;
+                    let lat = data.location.lat;
+
+              
+                error: function (xhr, status, error) { 
+                    console.error("Terjadi kesalahan:", status, error);
+                    alert("Data cuaca tidak dapat diambil. Pastikan nama kota benar atau periksa koneksi.");
+                },
+            });
+        });
+    </script>
 </body>
 
 </html>
