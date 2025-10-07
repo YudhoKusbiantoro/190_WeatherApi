@@ -26,7 +26,11 @@
                 console.log(data);
                 const v = document.getElementById("tampilan");
                 const l = document.getElementById("lokasi");
-                let suhu = data.current.temp_c;
+
+                let suhuC = data.current.temp_c;
+                let suhuF = data.current.temp_f;
+                let kelembapan = data.current.humidity; 
+                
                 let lokasi = data.location.name;
                 v.innerHTML = suhu;
                 l.innerHTML = lokasi;
